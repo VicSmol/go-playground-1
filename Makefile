@@ -11,7 +11,10 @@ fmt:
 	go fmt ./...
 
 doc:
-	godoc -http=:6060
+	@echo "=== Документация по cmd ==="
+	go doc ./cmd
+	@echo "=== Документация по internal и всем подпакетам ==="
+	@go list ./internal/... | xargs -r -n1 go doc
 
 clean:
 	rm -rf bin/
