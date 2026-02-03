@@ -1,5 +1,7 @@
 package stringsx
 
+import "strings"
+
 /*
 Реализовать пакет stringsx:
 - нормализация строк
@@ -10,28 +12,22 @@ package stringsx
 // Normalize нормализует строку.
 func Normalize(s string) string {
 	var input = []rune(s)
-	var output = make([]rune, 0)
-	var start = 0
+	var builder strings.Builder
+	var isLastSpace bool
 
-	for i := start; i < len(input) && input[i] == ' '; i++ {
-		start++
-	}
-
-	for i := start; i < len(input); i++ {
-		if input[i] != ' ' {
-			output = append(output, input[i])
+	for _, r := range input {
+		if !isLastSpace && r == ' ' {
+			builder.WriteRune(r)
+			isLastSpace = true
 		}
 
-		if input[i] == ' ' && input[i-1] != ' ' {
-			output = append(output, ' ')
+		if r != ' ' {
+			builder.WriteRune(r)
+			isLastSpace = false
 		}
 	}
 
-	if len(output) > 0 && output[len(output)-1] == ' ' {
-		output = output[:len(output)-1]
-	}
-
-	return string(output)
+	return strings.TrimSpace(builder.String())
 }
 
 // Split разбивает строку на подстроки по разделителю.
