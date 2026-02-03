@@ -9,8 +9,29 @@ package stringsx
 
 // Normalize нормализует строку.
 func Normalize(s string) string {
+	var input = []rune(s)
+	var output = make([]rune, 0)
+	var start = 0
 
-	return ""
+	for i := start; i < len(input) && input[i] == ' '; i++ {
+		start++
+	}
+
+	for i := start; i < len(input); i++ {
+		if input[i] != ' ' {
+			output = append(output, input[i])
+		}
+
+		if input[i] == ' ' && input[i-1] != ' ' {
+			output = append(output, ' ')
+		}
+	}
+
+	if len(output) > 0 && output[len(output)-1] == ' ' {
+		output = output[:len(output)-1]
+	}
+
+	return string(output)
 }
 
 // Split разбивает строку на подстроки по разделителю.
