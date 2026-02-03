@@ -6,20 +6,16 @@ import (
 )
 
 func TestNormalize(t *testing.T) {
-	// TODO: Реализовать тесты для Normalize
-	t.Run("should normalize empty string", func(t *testing.T) {
-		result := Normalize("")
-		assert.Empty(t, result)
-	})
+	t.Run("should normalize string", func(t *testing.T) {
+		var inputs = []string{"", "   ", " b ", "hello, world  ", "  hello,   world  "}
+		var expected = []string{"", "", "b", "hello, world", "hello, world"}
+		var result = make([]string, len(inputs))
 
-	t.Run("should normalize simple string", func(t *testing.T) {
-		result := Normalize("hello")
-		assert.Equal(t, "hello", result)
-	})
+		for index, input := range inputs {
+			result[index] = Normalize(input)
+		}
 
-	t.Run("should normalize string with spaces", func(t *testing.T) {
-		result := Normalize("  hello  world  ")
-		assert.Equal(t, "hello world", result)
+		assert.Equal(t, expected, result)
 	})
 }
 
