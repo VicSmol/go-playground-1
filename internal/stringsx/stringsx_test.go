@@ -1,8 +1,9 @@
 package stringsx
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNormalize(t *testing.T) {
@@ -20,20 +21,17 @@ func TestNormalize(t *testing.T) {
 }
 
 func TestSplit(t *testing.T) {
-	// TODO: Реализовать тесты для Split
-	t.Run("should split empty string", func(t *testing.T) {
-		result := Split("", ",")
-		assert.Empty(t, result)
-	})
+	t.Run("should split string", func(t *testing.T) {
+		var input = []string{"", "a", "a,b", "a,b,c", "a,,b,c,", ",,a, ,b,,c,,"}
+		var expected = [][]string{{}, {"a"}, {"a", "b"}, {"a", "b", "c"}, {"a", "b", "c"}, {"a", " ", "b", "c"}}
+		var result = make([][]string, len(input))
+		var separator = ","
 
-	t.Run("should split string with separator", func(t *testing.T) {
-		result := Split("a,b,c", ",")
-		assert.Equal(t, []string{"a", "b", "c"}, result)
-	})
+		for index, input := range input {
+			result[index] = Split(input, separator)
+		}
 
-	t.Run("should return single element when no separator found", func(t *testing.T) {
-		result := Split("abc", ",")
-		assert.Equal(t, []string{"abc"}, result)
+		assert.Equal(t, expected, result)
 	})
 }
 
