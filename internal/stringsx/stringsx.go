@@ -32,7 +32,16 @@ func Normalize(s string) string {
 
 // Split разбивает строку на подстроки по разделителю.
 func Split(s string, sep string) []string {
-	return []string{}
+	var separator = []rune(sep)[0]
+	var result []string = make([]string, 0)
+
+	for _, r := range []rune(s) {
+		if r != separator {
+			result = append(result, string(r))
+		}
+	}
+
+	return result
 }
 
 // Join объединяет подстроки в строку с разделителем.
