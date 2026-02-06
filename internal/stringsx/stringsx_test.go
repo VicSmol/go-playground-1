@@ -22,10 +22,10 @@ func TestNormalize(t *testing.T) {
 
 func TestSplit(t *testing.T) {
 	t.Run("should split string", func(t *testing.T) {
-		var input = []string{"", "a", "a,b", "a,b,c", "a,,b,c,", ",,a, ,b,,c,,"}
-		var expected = [][]string{{}, {"a"}, {"a", "b"}, {"a", "b", "c"}, {"a", "b", "c"}, {"a", " ", "b", "c"}}
-		var result = make([][]string, len(input))
-		var separator = ","
+		input := []string{"", ",,,,,,", "a", ",,a, ,b,,c,,", ",,a=b,,c=d,e=f,,"}
+		expected := [][]string{{}, {}, {"a"}, {"a", " ", "b", "c"}, {"a=b", "c=d", "e=f"}}
+		result := make([][]string, len(input))
+		separator := ","
 
 		for index, input := range input {
 			result[index] = Split(input, separator)
@@ -56,9 +56,19 @@ func TestJoin(t *testing.T) {
 }
 
 func TestParseKV(t *testing.T) {
-	// TODO: Реализовать тесты для ParseKV
-	t.Run("should parse empty string", func(t *testing.T) {
-		result := ParseKV("")
-		assert.Empty(t, result)
+	t.Run("should parse string", func(t *testing.T) {
+		input := []string{"", "a=b;c=d", ";;a=b;;c=d;e=f;;"}
+		expected := []map[string]string{
+			{},
+			{"a": "b", "c": "d"},
+			{"a": "b", "c": "d", "e": "f"},
+		}
+		result := make([]map[string]string, len(input))
+
+		for index, str := range input {
+			result[index] = ParseKV(str)
+		}
+
+		assert.Equal(t, expected, result)
 	})
 }
