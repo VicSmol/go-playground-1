@@ -1,6 +1,8 @@
 package stringsx
 
-import "strings"
+import (
+	"strings"
+)
 
 /*
 Реализовать пакет stringsx:
@@ -32,13 +34,27 @@ func Normalize(s string) string {
 
 // Split разбивает строку на подстроки по разделителю.
 func Split(s string, sep string) []string {
-	var separator = []rune(sep)[0]
-	var result []string = make([]string, 0)
+	separator := []rune(sep)[0]
+	symbols := []rune(s)
+	length := len(symbols)
+	result := make([]string, 0)
+	var builder strings.Builder
 
-	for _, r := range []rune(s) {
-		if r != separator {
-			result = append(result, string(r))
+	for i := 0; i < length; i++ {
+		if symbols[i] == separator && builder.Len() > 0 {
+			result = append(result, builder.String())
+			builder.Reset()
+
+			continue
 		}
+
+		if symbols[i] != separator {
+			builder.WriteRune(symbols[i])
+		}
+	}
+
+	if builder.Len() > 0 {
+		result = append(result, builder.String())
 	}
 
 	return result
@@ -66,5 +82,16 @@ func Join(s []string, sep string) string {
 
 // ParseKV парсит строку в map.
 func ParseKV(s string) map[string]string {
-	return map[string]string{}
+	separator := ";"
+	splits := Split(s, separator)
+	result := map[string]string{}
+
+	for _, split := range splits {
+		keyValue := Split(split, "=")
+		if len(keyValue) == 2 {
+			result[keyValue[0]] = keyValue[1]
+		}
+	}
+
+	return result
 }
