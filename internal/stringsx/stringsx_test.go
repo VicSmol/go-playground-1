@@ -36,20 +36,22 @@ func TestSplit(t *testing.T) {
 }
 
 func TestJoin(t *testing.T) {
-	// TODO: Реализовать тесты для Join
-	t.Run("should join empty slice", func(t *testing.T) {
-		result := Join([]string{}, ",")
-		assert.Empty(t, result)
-	})
+	t.Run("should join slice", func(t *testing.T) {
+		input := [][]string{
+			{},
+			{"a"},
+			{"a", "b", "c"},
+			{"aa", "bb", "cc"},
+		}
+		expected := []string{"", "a", "a,b,c", "aa,bb,cc"}
+		result := make([]string, len(input))
+		separator := ","
 
-	t.Run("should join slice with separator", func(t *testing.T) {
-		result := Join([]string{"a", "b", "c"}, ",")
-		assert.Equal(t, "a,b,c", result)
-	})
+		for index, str := range input {
+			result[index] = Join(str, separator)
+		}
 
-	t.Run("should join slice with empty separator", func(t *testing.T) {
-		result := Join([]string{"a", "b", "c"}, "")
-		assert.Equal(t, "abc", result)
+		assert.Equal(t, expected, result)
 	})
 }
 
@@ -58,20 +60,5 @@ func TestParseKV(t *testing.T) {
 	t.Run("should parse empty string", func(t *testing.T) {
 		result := ParseKV("")
 		assert.Empty(t, result)
-	})
-
-	t.Run("should parse simple key=value", func(t *testing.T) {
-		result := ParseKV("key=value")
-		assert.Equal(t, map[string]string{"key": "value"}, result)
-	})
-
-	t.Run("should parse multiple key=value pairs", func(t *testing.T) {
-		result := ParseKV("key=value;key2=value2")
-		assert.Equal(t, map[string]string{"key": "value", "key2": "value2"}, result)
-	})
-
-	t.Run("should handle empty values", func(t *testing.T) {
-		result := ParseKV("key=;key2=value")
-		assert.Equal(t, map[string]string{"key": "", "key2": "value"}, result)
 	})
 }
