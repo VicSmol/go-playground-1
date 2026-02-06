@@ -46,7 +46,22 @@ func Split(s string, sep string) []string {
 
 // Join объединяет подстроки в строку с разделителем.
 func Join(s []string, sep string) string {
-	return ""
+	var separator = []rune(sep)[0]
+	var builder strings.Builder
+
+	if len(s) == 0 {
+		return ""
+	}
+
+	for index, str := range s {
+		builder.WriteString(str)
+
+		if index != len(s)-1 {
+			builder.WriteRune(separator)
+		}
+	}
+
+	return builder.String()
 }
 
 // ParseKV парсит строку в map.
