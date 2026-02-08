@@ -1,3 +1,11 @@
 package setx
 
-// Реализовать set[T] на map[T]struct{} (пока без generics — как “SetString”, “SetInt”)
+type SetX interface {
+	NewSet()
+	Add()
+	Remove()
+	Contains()
+	Size()
+	ToSlice()
+	IsEmpty()
+}
