@@ -10,7 +10,7 @@
 
 ### Методы SetString:
 
-1. **NewSetString()** - создает новое пустое множество строк.
+1. **NewSet()** - создает новое пустое множество строк.
 2. **Add(s string)** - добавляет строку в множество.
 3. **Remove(s string)** - удаляет строку из множества.
 4. **Contains(s string) bool** - проверяет, содержится ли строка в множестве.
@@ -20,7 +20,7 @@
 
 Пример использования:
 ```go
-set := NewSetString()
+set := NewSet()
 set.Add("hello")
 set.Add("world")
 fmt.Println(set.Contains("hello")) // true
@@ -35,7 +35,7 @@ fmt.Println(set.Size()) // 2
 
 ### Методы SetInt:
 
-1. **NewSetInt()** - создает новое пустое множество целых чисел.
+1. **NewSet()** - создает новое пустое множество целых чисел.
 2. **Add(i int)** - добавляет целое число в множество.
 3. **Remove(i int)** - удаляет целое число из множества.
 4. **Contains(i int) bool** - проверяет, содержится ли целое число в множестве.
@@ -45,7 +45,7 @@ fmt.Println(set.Size()) // 2
 
 Пример использования:
 ```go
-set := NewSetInt()
+set := NewSet()
 set.Add(1)
 set.Add(2)
 fmt.Println(set.Contains(1)) // true
@@ -72,7 +72,7 @@ type SetString struct {
     // поля структуры
 }
 
-func NewSetString() *SetString
+func NewSet() *SetString
 func (s *SetString) Add(str string)
 func (s *SetString) Remove(str string)
 func (s *SetString) Contains(str string) bool
@@ -84,7 +84,7 @@ type SetInt struct {
     // поля структуры
 }
 
-func NewSetInt() *SetInt
+func NewSet() *SetInt
 func (s *SetInt) Add(i int)
 func (s *SetInt) Remove(i int)
 func (s *SetInt) Contains(i int) bool
