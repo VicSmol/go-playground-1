@@ -8,14 +8,14 @@ import (
 
 func TestSetXInt(t *testing.T) {
 	t.Run("should make setx int", func(t *testing.T) {
-		var input *SetInt = NewSet()
+		var input *SetInt = NewSetInt()
 		var expected *SetInt = &SetInt{set: make(map[int]struct{})}
 
 		assert.Equal(t, expected, input)
 	})
 
 	t.Run("should add int to setx int", func(t *testing.T) {
-		set := NewSet()
+		set := NewSetInt()
 
 		set.Add(1)
 
@@ -23,7 +23,7 @@ func TestSetXInt(t *testing.T) {
 	})
 
 	t.Run("should remove int from setx int", func(t *testing.T) {
-		set := NewSet()
+		set := NewSetInt()
 
 		set.Add(1)
 		set.Remove(1)
@@ -33,7 +33,7 @@ func TestSetXInt(t *testing.T) {
 	})
 
 	t.Run("should check values contains in setx int", func(t *testing.T) {
-		set := NewSet()
+		set := NewSetInt()
 
 		set.Add(1)
 
@@ -42,7 +42,7 @@ func TestSetXInt(t *testing.T) {
 	})
 
 	t.Run("should get slice from setx int", func(t *testing.T) {
-		set := NewSet()
+		set := NewSetInt()
 		expected := []int{1, 2, 3}
 
 		set.Add(1)
@@ -53,8 +53,8 @@ func TestSetXInt(t *testing.T) {
 	})
 
 	t.Run("should check that setx int is empty", func(t *testing.T) {
-		set := NewSet()
-		emptySet := NewSet()
+		set := NewSetInt()
+		emptySet := NewSetInt()
 
 		set.Add(1)
 
