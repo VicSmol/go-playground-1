@@ -6,7 +6,7 @@ type SetInt struct {
 	set map[int]struct{}
 }
 
-func NewSet() *SetInt {
+func NewSetInt() *SetInt {
 	return &SetInt{set: make(map[int]struct{})}
 }
 
