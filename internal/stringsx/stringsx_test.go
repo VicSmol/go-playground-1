@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNormalize(t *testing.T) {
+func TestStringsX(t *testing.T) {
 	t.Run("should normalize string", func(t *testing.T) {
 		var inputs = []string{"", "   ", " b ", "hello, world  ", "  hello,   world  "}
 		var expected = []string{"", "", "b", "hello, world", "hello, world"}
@@ -18,9 +18,7 @@ func TestNormalize(t *testing.T) {
 
 		assert.Equal(t, expected, result)
 	})
-}
 
-func TestSplit(t *testing.T) {
 	t.Run("should split string", func(t *testing.T) {
 		input := []string{"", ",,,,,,", "a", ",,a, ,b,,c,,", ",,a=b,,c=d,e=f,,"}
 		expected := [][]string{{}, {}, {"a"}, {"a", " ", "b", "c"}, {"a=b", "c=d", "e=f"}}
@@ -33,9 +31,7 @@ func TestSplit(t *testing.T) {
 
 		assert.Equal(t, expected, result)
 	})
-}
 
-func TestJoin(t *testing.T) {
 	t.Run("should join slice", func(t *testing.T) {
 		input := [][]string{
 			{},
@@ -53,9 +49,7 @@ func TestJoin(t *testing.T) {
 
 		assert.Equal(t, expected, result)
 	})
-}
 
-func TestParseKV(t *testing.T) {
 	t.Run("should parse string", func(t *testing.T) {
 		input := []string{"", "a=b;c=d", ";;a=b;;c=d;e=f;;"}
 		expected := []map[string]string{
