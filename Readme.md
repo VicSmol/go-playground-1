@@ -10,3 +10,7 @@ Base of language: syntax, types, methods, interfaces
 - [Task 1](./docs/stringsx.md) - stringsx module
 - [Task 2](./docs/setx.md) - setx module
 - [Task 3](./docs/io.reader.adapter.md) - io.reader.adapter module
+
+# Working Case
+
+- [Log analyzer](./docs/log-analyzer.md) - working case 1
