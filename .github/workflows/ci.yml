@@ -25,31 +25,10 @@ jobs:
         go version
         go env
 
-    - name: Check module tidiness
-      run: |
-        go mod tidy
-        git diff --exit-code go.mod go.sum || { echo "go.mod or go.sum is not up to date. Run 'go mod tidy' locally."; exit 1; }
-
-    - name: Check code formatting
-      run: |
-        gofmt_files=$(gofmt -l .)
-        if [ -n "$gofmt_files" ]; then
-          echo "Unformatted Go files detected by gofmt:";
-          echo "$gofmt_files";
-          echo "Run 'gofmt -s -w .' to format them.";
-          exit 1;
-        fi
-
-    - name: Run tests with coverage
-      run: |
-        go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+    - name: Run CI checks
+      run: make ci
 
     - name: Upload coverage to Codecov (optional)
       if: success()
       run: |
         bash <(curl -s https://codecov.io/bash) || echo "Codecov upload failed, continuing..."
-
-    - name: Display test results
-      if: always()
-      run: |
-        echo "Test execution completed."
