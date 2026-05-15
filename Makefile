@@ -20,9 +20,9 @@ GOFMT_FILES := $(shell find . -name "*.go" -not -path "*/.*" -not -path "*/vendo
 
 # === Основные цели ===
 
-.PHONY: all build run test vet fmt lint cover doc clean
+.PHONY: all build run test vet fmt cover doc clean
 
-all: fmt vet test cover
+all: tidy fmt vet test cover
 	@echo "✅ Все проверки пройдены: форматирование, веттинг, тесты, покрытие"
 
 build: $(BINARY)
@@ -46,15 +46,6 @@ vet:
 fmt:
 	@echo "Форматируем код..."
 	gofmt -s -w $(GOFMT_FILES)
-
-# lint: запуск golangci-lint (если установлен)
-lint:
-	@if command -v golangci-lint > /dev/null; then \
-		golangci-lint run; \
-	else \
-		echo "golangci-lint не установлен. Установите: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.54.2"; \
-		exit 1; \
-	fi
 
 # cover: показать отчёт по покрытию
 cover:
@@ -81,7 +72,7 @@ clean:
 
 # === CI ===
 # Используется в .github/workflows/ci.yml
-# make ci = fmt + vet + test + cover
+# make ci = fmt + vet + tidy + test + cover
 .PHONY: ci
 ci: all
 	@echo "✅ CI-проверки завершены успешно"
