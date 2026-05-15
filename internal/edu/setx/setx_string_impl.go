@@ -1,5 +1,7 @@
 package setx
 
+import "sort"
+
 // Реализовать set[T] на map[T]struct{} (пока без generics — как “SetString”, “SetInt”)
 
 type SetString struct {
@@ -29,14 +31,11 @@ func (s *SetString) Size() int {
 }
 
 func (s *SetString) ToSlice() []string {
-	slice := make([]string, len(s.set))
-	i := 0
-
-	for value := range s.set {
-		slice[i] = value
-		i++
+	slice := make([]string, 0, len(s.set))
+	for k := range s.set {
+		slice = append(slice, k)
 	}
-
+	sort.Strings(slice)
 	return slice
 }
 
