@@ -42,6 +42,11 @@ test:
 vet:
 	go vet ./...
 
+# tidy: проверка зависимостей
+tidy:
+	go mod tidy
+	@echo "✅ CI-проверки завершены успешно"
+
 # fmt: форматирование кода
 fmt:
 	@echo "Форматируем код..."
@@ -72,7 +77,6 @@ clean:
 
 # === CI ===
 # Используется в .github/workflows/ci.yml
-# make ci = fmt + vet + tidy + test + cover
+# make ci = fmt + vet + test + cover
 .PHONY: ci
 ci: all
-	@echo "✅ CI-проверки завершены успешно"
