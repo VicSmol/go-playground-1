@@ -1,0 +1,7 @@
+Jun  8 10:00:00 host nginx[123]: [INFO] User logged in
+Jun  8 10:00:01 host nginx[123]: [ERROR] Connection refused
+Jun  8 10:00:02 host auth[456]: [INFO] User logged out
+Jun  8 10:00:03 host cache[789]: [WARN] Cache miss
+Jun  8 10:00:04 host nginx[123]: [WARNING] High memory usage
+Jun  8 10:00:05 host app: [FATAL] Critical error
+Jun  8 10:00:06 host db[999]: [DEBUG] Query executed
