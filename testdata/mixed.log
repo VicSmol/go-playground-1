@@ -1,0 +1,6 @@
+{"level":"INFO","component":"auth","message":"JSON entry"}
+Jun  8 10:00:00 host nginx: [INFO] Syslog entry
+INFO custom: Custom format entry
+{"level":"ERROR","component":"db","message":"JSON error"}
+Jun  8 10:00:01 host db: [ERROR] Syslog error
+ERROR db: Custom error
