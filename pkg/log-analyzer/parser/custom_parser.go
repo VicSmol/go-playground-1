@@ -1,10 +1,10 @@
 package parser
 
 import (
-	"errors"
 	"regexp"
 	"strings"
 
+	"go-playground-1/internal/log-analyzer/errors"
 	"go-playground-1/internal/log-analyzer/mappers"
 )
 
@@ -36,12 +36,12 @@ func NewCustomParser() *CustomParser {
 func (p *CustomParser) Parse(line string) (*LogEntry, error) {
 	trimmed := strings.TrimSpace(line)
 	if trimmed == "" {
-		return nil, errors.New("empty line")
+		return nil, errors.ParserErrorEmptyLine
 	}
 
 	matches := p.re.FindStringSubmatch(trimmed)
 	if matches == nil {
-		return nil, errors.New("failed to parse custom format")
+		return nil, errors.ParserErrorInvalidCustomFormat
 	}
 
 	// matches[1] = level, matches[2] = component
@@ -50,7 +50,7 @@ func (p *CustomParser) Parse(line string) (*LogEntry, error) {
 
 	// Валидация уровня (проверяем, что это поддерживаемый уровень)
 	if !IsSupportedLevel(level) {
-		return nil, errors.New("unsupported log level")
+		return nil, errors.ParserErrorUnsupportedLevel
 	}
 
 	// Используем LevelMapper для нормализации уровня
