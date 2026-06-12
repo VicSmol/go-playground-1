@@ -4,6 +4,8 @@ import (
 	"errors"
 	"regexp"
 	"strings"
+
+	"go-playground-1/internal/log-analyzer/mappers"
 )
 
 // CustomParser парсит логи в кастомном формате: LEVEL COMPONENT: message
@@ -11,6 +13,8 @@ import (
 type CustomParser struct {
 	// Регулярное выражение для парсинга custom формата
 	re *regexp.Regexp
+	// LevelMapper для нормализации уровней логирования
+	levelMapper *mappers.LevelMapper
 }
 
 // NewCustomParser создает новый экземпляр CustomParser.
@@ -22,7 +26,8 @@ func NewCustomParser() *CustomParser {
 	// WARN или WARNING, регистронезависимо
 	pattern := `^(?i)(DEBUG|INFO|WARN(?:ING)?|WARNING|ERROR|FATAL|CRITICAL|EMERGENCY)\s+([a-zA-Z0-9_-]+):(.+)$`
 	return &CustomParser{
-		re: regexp.MustCompile(pattern),
+		re:          regexp.MustCompile(pattern),
+		levelMapper: mappers.NewLevelMapper(),
 	}
 }
 
@@ -40,7 +45,7 @@ func (p *CustomParser) Parse(line string) (*LogEntry, error) {
 	}
 
 	// matches[1] = level, matches[2] = component
-	level := matches[1]
+	level := strings.ToUpper(matches[1]) // приводим к верхнему регистру для валидации
 	component := matches[2]
 
 	// Валидация уровня (проверяем, что это поддерживаемый уровень)
@@ -48,8 +53,11 @@ func (p *CustomParser) Parse(line string) (*LogEntry, error) {
 		return nil, errors.New("unsupported log level")
 	}
 
+	// Используем LevelMapper для нормализации уровня
+	normalizedLevel := p.levelMapper.Normalize(level)
+
 	return &LogEntry{
-		Level:     NormalizeLevel(level),
+		Level:     normalizedLevel,
 		Component: component,
 	}, nil
 }
