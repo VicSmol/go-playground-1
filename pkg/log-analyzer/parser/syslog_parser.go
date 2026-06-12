@@ -1,10 +1,10 @@
 package parser
 
 import (
-	"errors"
 	"regexp"
 	"strings"
 
+	"go-playground-1/internal/log-analyzer/errors"
 	"go-playground-1/internal/log-analyzer/mappers"
 )
 
@@ -34,7 +34,7 @@ func NewSyslogParser() *SyslogParser {
 func (p *SyslogParser) Parse(line string) (*LogEntry, error) {
 	trimmed := strings.TrimSpace(line)
 	if trimmed == "" {
-		return nil, errors.New("empty line")
+		return nil, errors.ParserErrorEmptyLine
 	}
 
 	// Проверка, что строка начинается с месяца
@@ -47,12 +47,12 @@ func (p *SyslogParser) Parse(line string) (*LogEntry, error) {
 		}
 	}
 	if !startsWithMonth {
-		return nil, errors.New("not a syslog line")
+		return nil, errors.ParserErrorInvalidSyslogFormat
 	}
 
 	matches := p.re.FindStringSubmatch(trimmed)
 	if matches == nil {
-		return nil, errors.New("failed to parse syslog format")
+		return nil, errors.ParserErrorInvalidSyslogFormat
 	}
 
 	// matches[5] = component (может содержать [pid]), matches[6] = level
@@ -66,7 +66,7 @@ func (p *SyslogParser) Parse(line string) (*LogEntry, error) {
 
 	// Валидация уровня
 	if !IsSupportedLevel(level) {
-		return nil, errors.New("unsupported log level")
+		return nil, errors.ParserErrorUnsupportedLevel
 	}
 
 	// Используем LevelMapper для нормализации уровня
