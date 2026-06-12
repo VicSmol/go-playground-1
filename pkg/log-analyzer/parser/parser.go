@@ -2,10 +2,6 @@
 // Поддерживает автоматическое определение формата и нормализацию уровней логирования.
 package parser
 
-import (
-	"strings"
-)
-
 // LogEntry представляет собой одну запись лога после парсинга.
 type LogEntry struct {
 	Level     string // Нормализованный уровень логирования (DEBUG, INFO, WARN, ERROR, FATAL)
@@ -19,22 +15,6 @@ type LogParser interface {
 	Parse(line string) (*LogEntry, error)
 }
 
-// NormalizeLevel нормализует уровень логирования согласно ТЗ:
-// - WARNING → WARN
-// - CRITICAL, FATAL, EMERGENCY → FATAL
-// Остальные уровни возвращаются как есть (в верхнем регистре).
-func NormalizeLevel(level string) string {
-	upper := strings.ToUpper(level)
-	switch upper {
-	case "WARNING":
-		return "WARN"
-	case "CRITICAL", "FATAL", "EMERGENCY":
-		return "FATAL"
-	default:
-		return upper
-	}
-}
-
 // SupportedLevels возвращает список поддерживаемых уровней логирования.
 func SupportedLevels() []string {
 	return []string{"DEBUG", "INFO", "WARN", "WARNING", "ERROR", "FATAL", "CRITICAL", "EMERGENCY"}
@@ -42,7 +22,7 @@ func SupportedLevels() []string {
 
 // IsSupportedLevel проверяет, является ли уровень логирования поддерживаемым.
 func IsSupportedLevel(level string) bool {
-	upper := strings.ToUpper(level)
+	upper := level // level уже в верхнем регистре после парсинга
 	for _, supported := range SupportedLevels() {
 		if upper == supported {
 			return true
