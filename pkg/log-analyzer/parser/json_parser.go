@@ -2,23 +2,11 @@ package parser
 
 import (
 	"encoding/json"
-	"errors"
 	"strings"
 
+	"go-playground-1/internal/log-analyzer/errors"
 	"go-playground-1/internal/log-analyzer/mappers"
 )
-
-// ErrMissingLevel occurs when JSON log entry doesn't have a level field.
-var ErrMissingLevel = errors.New("missing required field: level")
-
-// ErrMissingComponent occurs when JSON log entry doesn't have a component field.
-var ErrMissingComponent = errors.New("missing required field: component")
-
-// ErrEmptyLevel occurs when level field is empty.
-var ErrEmptyLevel = errors.New("level field is empty")
-
-// ErrEmptyComponent occurs when component field is empty.
-var ErrEmptyComponent = errors.New("component field is empty")
 
 // JSONParser парсит логи в формате JSON.
 // Ожидает JSON с полями: level (обязательное), component (обязательное), message, timestamp (опциональные).
@@ -39,15 +27,15 @@ func NewJSONParser() *JSONParser {
 func (p *JSONParser) Parse(line string) (*LogEntry, error) {
 	trimmed := strings.TrimSpace(line)
 	if trimmed == "" {
-		return nil, errors.New("empty line")
+		return nil, errors.ParserErrorEmptyLine
 	}
 
 	// Проверка, что строка начинается с '{' и заканчивается '}'
 	if !strings.HasPrefix(trimmed, "{") {
-		return nil, errors.New("not a JSON line")
+		return nil, errors.ParserErrorInvalidJSONFormat
 	}
 	if !strings.HasSuffix(trimmed, "}") {
-		return nil, errors.New("invalid JSON: missing closing brace")
+		return nil, errors.ParserErrorInvalidJSONFormat
 	}
 
 	var data map[string]interface{}
@@ -58,20 +46,20 @@ func (p *JSONParser) Parse(line string) (*LogEntry, error) {
 	// Проверка обязательных полей
 	level, ok := data["level"]
 	if !ok {
-		return nil, ErrMissingLevel
+		return nil, errors.ParserErrorMissingFieldLevel
 	}
 	levelStr, ok := level.(string)
 	if !ok || levelStr == "" {
-		return nil, ErrEmptyLevel
+		return nil, errors.ParserErrorEmptyFieldLevel
 	}
 
 	component, ok := data["component"]
 	if !ok {
-		return nil, ErrMissingComponent
+		return nil, errors.ParserErrorMissingFieldComponent
 	}
 	componentStr, ok := component.(string)
 	if !ok || componentStr == "" {
-		return nil, ErrEmptyComponent
+		return nil, errors.ParserErrorEmptyFieldComponent
 	}
 
 	// Используем LevelMapper для нормализации уровня
