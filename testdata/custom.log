@@ -1,0 +1,7 @@
+INFO auth: User logged in
+ERROR db: Connection refused
+INFO auth: User logged out
+WARN cache: Cache miss
+WARNING auth: Session expiring soon
+FATAL app: Critical error
+DEBUG cache: Cache hit
