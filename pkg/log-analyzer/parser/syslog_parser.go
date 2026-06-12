@@ -4,6 +4,8 @@ import (
 	"errors"
 	"regexp"
 	"strings"
+
+	"go-playground-1/internal/log-analyzer/mappers"
 )
 
 // SyslogParser парсит логи в формате RFC 3164.
@@ -12,6 +14,8 @@ import (
 type SyslogParser struct {
 	// Регулярное выражение для парсинга syslog
 	re *regexp.Regexp
+	// LevelMapper для нормализации уровней логирования
+	levelMapper *mappers.LevelMapper
 }
 
 // NewSyslogParser создает новый экземпляр SyslogParser.
@@ -20,7 +24,8 @@ func NewSyslogParser() *SyslogParser {
 	// Пример: Jun  8 10:00:00 host nginx[123]: [INFO] User logged in
 	pattern := `^([A-Z][a-z]{2})\s+(\d{1,2})\s+(\d{2}:\d{2}:\d{2})\s+(\S+)\s+(\S+?):?\s*\[?([A-Z]+)\]?`
 	return &SyslogParser{
-		re: regexp.MustCompile(pattern),
+		re:          regexp.MustCompile(pattern),
+		levelMapper: mappers.NewLevelMapper(),
 	}
 }
 
@@ -64,8 +69,11 @@ func (p *SyslogParser) Parse(line string) (*LogEntry, error) {
 		return nil, errors.New("unsupported log level")
 	}
 
+	// Используем LevelMapper для нормализации уровня
+	normalizedLevel := p.levelMapper.Normalize(level)
+
 	return &LogEntry{
-		Level:     NormalizeLevel(level),
+		Level:     normalizedLevel,
 		Component: component,
 	}, nil
 }
