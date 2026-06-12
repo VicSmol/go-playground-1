@@ -1,0 +1,8 @@
+{"level":"INFO","component":"auth","message":"User logged in"}
+{"level":"ERROR","component":"db","message":"Connection refused"}
+{"level":"INFO","component":"auth","message":"User logged out"}
+{"level":"WARN","component":"cache","message":"Cache miss"}
+{"level":"INFO","component":"auth","message":"User logged in"}
+{"level":"DEBUG","component":"cache","message":"Cache hit"}
+{"level":"WARNING","component":"auth","message":"Session expiring soon"}
+{"level":"CRITICAL","component":"app","message":"Out of memory"}
