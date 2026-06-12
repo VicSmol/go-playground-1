@@ -1,0 +1,11 @@
+not a valid log line
+{"invalid": true}
+random garbage here
+INFO
+ERROR
+WARN
+WARNING
+CRITICAL
+FATAL
+EMERGENCY
+DEBUG
