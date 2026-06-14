@@ -64,10 +64,6 @@ func (p *SyslogParser) Parse(line string) (*LogEntry, error) {
 		component = component[:idx]
 	}
 
-	// Валидация уровня
-	if !IsSupportedLevel(level) {
-		return nil, errors.ParserErrorUnsupportedLevel
-	}
 
 	// Используем LevelMapper для нормализации уровня
 	normalizedLevel := p.levelMapper.Normalize(level)
