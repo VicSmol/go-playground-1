@@ -11,25 +11,21 @@ type LevelMapper struct {
 }
 
 // NewLevelMapper создает новый экземпляр LevelMapper с инициализированным маппингом.
+// Маппинг позволяет сгруппировать несколько уровней в один (например, WARNING и WARN → WARN).
+// По умолчанию нормализуются только WARNING → WARN.
+// Для обработки любых уровней (CRITICAL, EMERGENCY, TRACE и т.д.) добавь их в mappings.
 func NewLevelMapper() *LevelMapper {
 	return &LevelMapper{
 		mappings: map[string]string{
-			"DEBUG":     "DEBUG",
-			"INFO":      "INFO",
-			"WARN":      "WARN",
-			"WARNING":   "WARN",
-			"ERROR":     "ERROR",
-			"FATAL":     "FATAL",
-			"CRITICAL":  "FATAL",
-			"EMERGENCY": "FATAL",
+			"WARNING": "WARN",
 		},
 	}
 }
 
 // Normalize нормализует уровень логирования:
 // - WARNING → WARN
-// - CRITICAL, FATAL, EMERGENCY → FATAL
-// Остальные уровни возвращаются как есть (в верхнем регистре).
+// - Все остальные уровни возвращаются как есть (в верхнем регистре).
+// Это позволяет обрабатывать любые уровни, встречающиеся в логах.
 func (m *LevelMapper) Normalize(level string) string {
 	upper := strings.ToUpper(level)
 	if normalized, ok := m.mappings[upper]; ok {
