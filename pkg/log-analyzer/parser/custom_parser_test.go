@@ -8,57 +8,57 @@ func TestCustomParser_ParseValidCustom(t *testing.T) {
 	parser := NewCustomParser()
 
 	tests := []struct {
-		name           string
-		input          string
-		expectedLevel  string
+		name              string
+		input             string
+		expectedLevel     string
 		expectedComponent string
 	}{
 		{
-			name:           "basic info log",
-			input:          "INFO auth: User logged in",
-			expectedLevel:  "INFO",
+			name:              "basic info log",
+			input:             "INFO auth: User logged in",
+			expectedLevel:     "INFO",
 			expectedComponent: "auth",
 		},
 		{
-			name:           "error with colon in message",
-			input:          "ERROR db: Connection: refused",
-			expectedLevel:  "ERROR",
+			name:              "error with colon in message",
+			input:             "ERROR db: Connection: refused",
+			expectedLevel:     "ERROR",
 			expectedComponent: "db",
 		},
 		{
-			name:           "warning normalized",
-			input:          "WARNING auth: Session expiring",
-			expectedLevel:  "WARN",
+			name:              "warning",
+			input:             "WARNING auth: Session expiring",
+			expectedLevel:     "WARN",
 			expectedComponent: "auth",
 		},
 		{
-			name:           "fatal normalized",
-			input:          "FATAL app: Critical error",
-			expectedLevel:  "FATAL",
+			name:              "fatal",
+			input:             "FATAL app: Critical error",
+			expectedLevel:     "FATAL",
 			expectedComponent: "app",
 		},
 		{
-			name:           "critical normalized",
-			input:          "CRITICAL app: Critical error",
-			expectedLevel:  "FATAL",
+			name:              "critical",
+			input:             "CRITICAL app: Critical error",
+			expectedLevel:     "CRITICAL",
 			expectedComponent: "app",
 		},
 		{
-			name:           "emergency normalized",
-			input:          "EMERGENCY app: Critical error",
-			expectedLevel:  "FATAL",
+			name:              "emergency",
+			input:             "EMERGENCY app: Critical error",
+			expectedLevel:     "EMERGENCY",
 			expectedComponent: "app",
 		},
 		{
-			name:           "lowercase level normalized",
-			input:          "info auth: User logged in",
-			expectedLevel:  "INFO",
+			name:              "lowercase level normalized",
+			input:             "info auth: User logged in",
+			expectedLevel:     "INFO",
 			expectedComponent: "auth",
 		},
 		{
-			name:           "warn vs warning",
-			input:          "WARN auth: Warning message",
-			expectedLevel:  "WARN",
+			name:              "warn vs warning",
+			input:             "WARN auth: Warning message",
+			expectedLevel:     "WARN",
 			expectedComponent: "auth",
 		},
 	}
@@ -86,7 +86,7 @@ func TestCustomParser_ParseInvalidCustom(t *testing.T) {
 	parser := NewCustomParser()
 
 	tests := []struct {
-		name string
+		name  string
 		input string
 	}{
 		{"not custom format", "not a custom line"},
@@ -113,8 +113,8 @@ func TestCustomParser_ParseComponentWithSpecialChars(t *testing.T) {
 	parser := NewCustomParser()
 
 	tests := []struct {
-		name           string
-		input          string
+		name              string
+		input             string
 		expectedComponent string
 	}{
 		{"component with underscore", "INFO auth_service: User logged in", "auth_service"},
