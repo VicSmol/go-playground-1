@@ -14,19 +14,3 @@ type LogParser interface {
 	// При ошибке парсинга (некорректный формат) возвращает (nil, error).
 	Parse(line string) (*LogEntry, error)
 }
-
-// SupportedLevels возвращает список поддерживаемых уровней логирования.
-func SupportedLevels() []string {
-	return []string{"DEBUG", "INFO", "WARN", "WARNING", "ERROR", "FATAL", "CRITICAL", "EMERGENCY"}
-}
-
-// IsSupportedLevel проверяет, является ли уровень логирования поддерживаемым.
-func IsSupportedLevel(level string) bool {
-	upper := level // level уже в верхнем регистре после парсинга
-	for _, supported := range SupportedLevels() {
-		if upper == supported {
-			return true
-		}
-	}
-	return false
-}
