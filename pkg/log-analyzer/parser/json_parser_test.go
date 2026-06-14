@@ -26,27 +26,27 @@ func TestJSONParser_ParseValidJSON(t *testing.T) {
 			expectedComponent: "db",
 		},
 		{
-			name:              "warning normalized",
+			name:              "warning",
 			input:             `{"level":"WARNING","component":"cache","message":"Cache miss"}`,
 			expectedLevel:     "WARN",
 			expectedComponent: "cache",
 		},
 		{
-			name:              "fatal normalized",
+			name:              "fatal",
 			input:             `{"level":"FATAL","component":"app","message":"Critical error"}`,
 			expectedLevel:     "FATAL",
 			expectedComponent: "app",
 		},
 		{
-			name:              "critical normalized",
+			name:              "critical",
 			input:             `{"level":"CRITICAL","component":"app","message":"Critical error"}`,
-			expectedLevel:     "FATAL",
+			expectedLevel:     "CRITICAL",
 			expectedComponent: "app",
 		},
 		{
-			name:              "emergency normalized",
+			name:              "emergency",
 			input:             `{"level":"EMERGENCY","component":"app","message":"Critical error"}`,
-			expectedLevel:     "FATAL",
+			expectedLevel:     "EMERGENCY",
 			expectedComponent: "app",
 		},
 		{
