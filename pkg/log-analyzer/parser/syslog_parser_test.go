@@ -8,45 +8,45 @@ func TestSyslogParser_ParseValidSyslog(t *testing.T) {
 	parser := NewSyslogParser()
 
 	tests := []struct {
-		name           string
-		input          string
-		expectedLevel  string
+		name              string
+		input             string
+		expectedLevel     string
 		expectedComponent string
 	}{
 		{
-			name:           "basic info log with pid",
-			input:          "Jun  8 10:00:00 host nginx[123]: [INFO] User logged in",
-			expectedLevel:  "INFO",
+			name:              "basic info log with pid",
+			input:             "Jun  8 10:00:00 host nginx[123]: [INFO] User logged in",
+			expectedLevel:     "INFO",
 			expectedComponent: "nginx",
 		},
 		{
-			name:           "error without pid",
-			input:          "Jun  8 10:00:01 host nginx: [ERROR] Connection refused",
-			expectedLevel:  "ERROR",
+			name:              "error without pid",
+			input:             "Jun  8 10:00:01 host nginx: [ERROR] Connection refused",
+			expectedLevel:     "ERROR",
 			expectedComponent: "nginx",
 		},
 		{
-			name:           "warning normalized",
-			input:          "Jun  8 10:00:02 host auth[456]: [WARNING] Session expiring",
-			expectedLevel:  "WARN",
+			name:              "warning",
+			input:             "Jun  8 10:00:02 host auth[456]: [WARNING] Session expiring",
+			expectedLevel:     "WARN",
 			expectedComponent: "auth",
 		},
 		{
-			name:           "fatal normalized",
-			input:          "Jun  8 10:00:03 host app: [FATAL] Critical error",
-			expectedLevel:  "FATAL",
+			name:              "fatal",
+			input:             "Jun  8 10:00:03 host app: [FATAL] Critical error",
+			expectedLevel:     "FATAL",
 			expectedComponent: "app",
 		},
 		{
-			name:           "critical normalized",
-			input:          "Jun  8 10:00:04 host app[789]: [CRITICAL] Critical error",
-			expectedLevel:  "FATAL",
+			name:              "critical",
+			input:             "Jun  8 10:00:04 host app[789]: [CRITICAL] Critical error",
+			expectedLevel:     "CRITICAL",
 			expectedComponent: "app",
 		},
 		{
-			name:           "level without brackets",
-			input:          "Jun  8 10:00:05 host db: INFO Query executed",
-			expectedLevel:  "INFO",
+			name:              "level without brackets",
+			input:             "Jun  8 10:00:05 host db: INFO Query executed",
+			expectedLevel:     "INFO",
 			expectedComponent: "db",
 		},
 	}
@@ -74,7 +74,7 @@ func TestSyslogParser_ParseInvalidSyslog(t *testing.T) {
 	parser := NewSyslogParser()
 
 	tests := []struct {
-		name string
+		name  string
 		input string
 	}{
 		{"not syslog format", "not a syslog line"},
@@ -100,7 +100,7 @@ func TestSyslogParser_ParseDifferentMonths(t *testing.T) {
 	parser := NewSyslogParser()
 
 	tests := []struct {
-		name string
+		name  string
 		input string
 	}{
 		{"January", "Jan  1 00:00:00 host nginx: [INFO] User logged in"},
