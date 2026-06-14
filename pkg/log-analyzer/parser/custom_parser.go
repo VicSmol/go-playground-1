@@ -21,10 +21,8 @@ type CustomParser struct {
 func NewCustomParser() *CustomParser {
 	// Pattern: LEVEL COMPONENT: message
 	// Уровень в начале, component до первого ':'
-	// Используем (?i) для регистронезависимого поиска уровней
-	// Проверяем, что после компонента есть ':'
-	// WARN или WARNING, регистронезависимо
-	pattern := `^(?i)(DEBUG|INFO|WARN(?:ING)?|WARNING|ERROR|FATAL|CRITICAL|EMERGENCY)\s+([a-zA-Z0-9_-]+):(.+)$`
+	// Уровень может быть любым словом, состоящим из букв, цифр, подчеркиваний или дефисов
+	pattern := `^([A-Za-z0-9_-]+)\s+([a-zA-Z0-9_-]+):(.+)$`
 	return &CustomParser{
 		re:          regexp.MustCompile(pattern),
 		levelMapper: mappers.NewLevelMapper(),
@@ -47,11 +45,6 @@ func (p *CustomParser) Parse(line string) (*LogEntry, error) {
 	// matches[1] = level, matches[2] = component
 	level := strings.ToUpper(matches[1]) // приводим к верхнему регистру для валидации
 	component := matches[2]
-
-	// Валидация уровня (проверяем, что это поддерживаемый уровень)
-	if !IsSupportedLevel(level) {
-		return nil, errors.ParserErrorUnsupportedLevel
-	}
 
 	// Используем LevelMapper для нормализации уровня
 	normalizedLevel := p.levelMapper.Normalize(level)
