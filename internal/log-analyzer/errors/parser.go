@@ -19,13 +19,12 @@ var (
 	ParserErrorEmptyFieldComponent   = errors.New("component field is empty")
 )
 
-// Parser errors for Syslog parser
-var (
-	ParserErrorInvalidSyslogFormat = errors.New("invalid syslog format")
-	ParserErrorUnsupportedLevel    = errors.New("unsupported log level")
-)
-
 // Parser errors for Custom parser
 var (
 	ParserErrorInvalidCustomFormat = errors.New("invalid custom format")
+)
+
+// Parser errors for Syslog parser
+var (
+	ParserErrorInvalidSyslogFormat = errors.New("invalid syslog format")
 )
